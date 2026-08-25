@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Integración Fundraising · Evaluación · TECHO</title>
+<link rel="icon" href="https://pub-a8070b9a092e4edf920c5172d5514927.r2.dev/favicon-techo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" />
+
+<style>
+:root{
+  --celeste:#0092DD; --azul:#005CA9; --blanco:#fff; --negro:#1D1D1B;
+  --amarillo:#FDC533; --verde:#2FAC66; --coral:#E94362;
+  --rosa:#F088B6; --violeta:#954B97;
+  --gris-bg:#EEF1F4; --gris-linea:#E2E7EC; --texto:#2F3235; --texto-suave:#6E7479;
+  --plan:#93a3b4;
+  --ok-bg:#E7F6ED; --ok-tx:#1E7A44;
+  --warn-bg:#FFF5DC; --warn-tx:#8A6A12;
+  --bad-bg:#FDE9ED; --bad-tx:#B32540;
+  --display:'Fredoka',system-ui,sans-serif; --body:'Montserrat',system-ui,sans-serif;
+  --r:18px; --sombra:0 1px 3px rgba(16,42,67,.06),0 8px 24px rgba(16,42,67,.06);
+  --z-nav:20;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--gris-bg);color:var(--texto);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;letter-spacing:-.01em;color:var(--negro)}
+p{text-wrap:pretty}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+.rev{opacity:1;transform:none}
+@media (prefers-reduced-motion:no-preference){
+  .rev{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+  .rev.on{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+/* Nav */
+nav{position:sticky;top:0;z-index:var(--z-nav);background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--gris-linea)}
+nav .wrap{display:flex;align-items:center;gap:14px;height:64px}
+nav .logo{height:26px;width:auto}
+nav .titulo{font-family:var(--display);font-weight:600;font-size:14.5px;line-height:1.2;color:var(--negro)}
+nav .titulo span{display:block;font-family:var(--body);font-weight:500;font-size:11.5px;color:var(--texto-suave)}
+nav .estado{margin-left:auto;display:flex;align-items:center;gap:9px;font-size:12px;color:var(--texto-suave)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--verde);flex:0 0 auto}
+
+/* Hero */
+header.hero{padding:52px 0 26px}
+.eyebrow{font-family:var(--display);font-size:11.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--celeste);margin-bottom:12px}
+header h1{font-size:clamp(1.9rem,4.4vw,3rem);font-weight:600;line-height:1.1;max-width:22ch}
+header .sub{margin-top:14px;font-size:16px;color:var(--texto-suave);max-width:66ch}
+
+/* Chips de contexto */
+.chips{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.chip{background:var(--blanco);border:1px solid var(--gris-linea);border-radius:99px;padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--texto);box-shadow:var(--sombra)}
+.chip b{color:var(--celeste)}
+
+section{padding:22px 0}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.kpi{background:var(--blanco);border-radius:var(--r);padding:20px 22px;box-shadow:var(--sombra);position:relative;overflow:hidden;border:1px solid rgba(16,42,67,.05)}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--celeste)}
+.kpi[data-c="verde"]::before{background:var(--verde)}
+.kpi[data-c="amarillo"]::before{background:var(--amarillo)}
+.kpi[data-c="violeta"]::before{background:var(--violeta)}
+.kpi[data-c="coral"]::before{background:var(--coral)}
+.kpi[data-c="azul"]::before{background:var(--azul)}
+.kpi .lbl{font-size:12.5px;color:var(--texto-suave);font-weight:500}
+.kpi .val{font-family:var(--display);font-weight:700;font-size:34px;line-height:1.05;color:var(--negro);margin-top:6px;font-variant-numeric:tabular-nums}
+.kpi .val small{font-size:16px;font-weight:600;color:var(--texto-suave)}
+.kpi .pie{font-size:12px;margin-top:6px;color:var(--texto-suave)}
+
+/* Secciones / cards */
+.sec-title{font-family:var(--display);font-size:13px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:var(--texto-suave);margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.sec-title::after{content:"";flex:1;height:1px;background:var(--gris-linea)}
+.sec-lead{font-size:14px;color:var(--texto-suave);margin-bottom:16px;max-width:70ch}
+.card{background:var(--blanco);border-radius:var(--r);padding:22px 24px;box-shadow:var(--sombra);border:1px solid rgba(16,42,67,.05)}
+.card h3{font-size:16px;font-weight:600;margin-bottom:2px}
+.card .hint{font-size:12.5px;color:var(--texto-suave);margin-bottom:16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-2.narrow{grid-template-columns:1.1fr .9fr}
+/* Contenedor de altura fija para Chart.js: sin esto, maintainAspectRatio:false
+   entra en loop de resize y el canvas crece sin límite. */
+.chart-box{position:relative;height:320px;width:100%}
+
+/* Prosa ejecutiva */
+.prosa p{font-size:15px;margin-bottom:12px}
+.prosa p:last-child{margin-bottom:0}
+.prosa strong{color:var(--negro)}
+
+/* Barras hechas a mano */
+.barra{margin-bottom:13px}
+.barra .top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:5px;gap:10px}
+.barra .top b{font-weight:600;font-variant-numeric:tabular-nums}
+.barra .riel{height:9px;background:var(--gris-bg);border-radius:99px;overflow:hidden}
+.barra .fill{height:100%;width:0;border-radius:99px;background:var(--celeste);transition:width .8s cubic-bezier(.2,.7,.2,1)}
+.barra .fill.v{background:var(--verde)} .barra .fill.a{background:var(--amarillo)} .barra .fill.c{background:var(--coral)}
+@media (prefers-reduced-motion:reduce){.barra .fill{transition:none}}
+
+/* Pills */
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.pill.ok{background:var(--ok-bg);color:var(--ok-tx)}
+.pill.med{background:var(--warn-bg);color:var(--warn-tx)}
+.pill.bad{background:var(--bad-bg);color:var(--bad-tx)}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:7px;background:var(--gris-bg);color:var(--texto-suave);margin:2px 3px 2px 0}
+
+/* Heatmap de cuellos de botella */
+.heat{display:flex;flex-direction:column;gap:9px}
+.heat .fila{display:grid;grid-template-columns:34px 1fr auto;gap:14px;align-items:center;padding:13px 15px;border-radius:12px;border:1px solid var(--gris-linea);background:var(--blanco)}
+.heat .rk{font-family:var(--display);font-weight:700;font-size:17px;color:var(--texto-suave);text-align:center}
+.heat .qtxt{font-size:14px;font-weight:600;color:var(--negro)}
+.heat .qsub{font-size:12.5px;color:var(--texto-suave);margin-top:3px}
+.heat .score{font-family:var(--display);font-weight:700;font-size:20px;font-variant-numeric:tabular-nums;padding:6px 12px;border-radius:10px;min-width:56px;text-align:center}
+.s-bad{background:var(--bad-bg);color:var(--bad-tx)}
+.s-med{background:var(--warn-bg);color:var(--warn-tx)}
+.s-ok{background:var(--ok-bg);color:var(--ok-tx)}
+
+/* Insights list */
+.ins{display:flex;gap:13px;padding:14px 0;border-top:1px solid var(--gris-linea)}
+.ins:first-child{border-top:0;padding-top:2px}
+.ins .ico{flex:0 0 auto;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:16px;background:var(--gris-bg)}
+.ins .ico.up{background:var(--ok-bg)} .ins .ico.down{background:var(--bad-bg)} .ins .ico.flag{background:var(--warn-bg)}
+.ins h4{font-size:14.5px;font-family:var(--body);font-weight:700;color:var(--negro);margin-bottom:3px}
+.ins p{font-size:13px;color:var(--texto-suave)}
+
+/* Entrevistas */
+.entrev{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.entrev .caja{background:var(--blanco);border:1px solid var(--gris-linea);border-left:4px solid var(--violeta);border-radius:12px;padding:18px 20px}
+.entrev .caja.f1{border-left-color:var(--coral)}
+.entrev .caja.f2{border-left-color:var(--amarillo)}
+.entrev .caja.f3{border-left-color:var(--celeste)}
+.entrev .caja.f4{border-left-color:var(--violeta)}
+.entrev .foco{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--texto-suave);margin-bottom:6px}
+.entrev .caja h4{font-family:var(--display);font-size:16px;font-weight:600;color:var(--negro);margin-bottom:8px}
+.entrev .caja p.desc{font-size:13px;color:var(--texto-suave);margin-bottom:12px}
+.entrev .q{font-size:13px;color:var(--texto);padding:8px 0 8px 20px;position:relative}
+.entrev .q::before{content:"?";position:absolute;left:0;top:7px;width:15px;height:15px;background:var(--violeta);color:#fff;border-radius:50%;font-size:10px;font-weight:700;display:grid;place-items:center;font-family:var(--body)}
+
+/* Acciones */
+.acc{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.acc .col h3{font-family:var(--display);font-size:15px;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.acc .col.quick h3 .badge{background:var(--ok-bg);color:var(--ok-tx)}
+.acc .col.mid h3 .badge{background:var(--warn-bg);color:var(--warn-tx)}
+.acc .badge{font-family:var(--body);font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:99px;letter-spacing:.4px;text-transform:uppercase}
+.acc ul{list-style:none}
+.acc li{background:var(--blanco);border:1px solid var(--gris-linea);border-radius:11px;padding:13px 15px;margin-bottom:10px;font-size:13.5px}
+.acc li b{display:block;font-weight:700;color:var(--negro);margin-bottom:3px}
+.acc li .areas{margin-top:7px}
+
+/* Tabla por área */
+.tabla-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-family:var(--display);font-size:11.5px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--texto-suave);padding:0 12px 10px;white-space:nowrap}
+td{padding:11px 12px;border-top:1px solid var(--gris-linea);vertical-align:middle}
+td.n{text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
+
+.nota{font-size:12px;color:var(--texto-suave);margin-top:14px;padding:12px 14px;background:var(--blanco);border:1px dashed var(--gris-linea);border-radius:12px}
+
+/* Footer */
+footer{margin-top:44px;background:var(--negro);color:#B9BEC3;padding:30px 0}
+footer .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+footer .logo{height:24px;width:auto}
+footer .tagf{font-family:var(--display);font-size:14px;color:var(--blanco)}
+footer .meta{margin-left:auto;font-size:12px;text-align:right}
+
+@media (max-width:820px){
+  .grid-2,.grid-2.narrow,.entrev,.acc{grid-template-columns:1fr}
+  nav .titulo span{display:none}
+  footer .meta{margin-left:0;width:100%;text-align:left}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <img class="logo" src="https://techo.org/wp-content/uploads/2024/03/Capa_1-1.svg" alt="TECHO" />
+    <div class="titulo">Integración Fundraising<span>Evaluación de proceso · Uso interno</span></div>
+    <div class="estado">
+      <span class="dot"></span><span>Corte 25/08/2026 · 13 respuestas</span>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow rev">Fundraising Internacional × Áreas de soporte</div>
+    <h1 class="rev">¿Cómo viene la integración entre Fundraising y las áreas que lo sostienen?</h1>
+    <p class="sub rev">Lectura ejecutiva de la evaluación interna sobre la articulación entre Fundraising Internacional
+      y Administración&nbsp;&&nbsp;Finanzas, Marketing&nbsp;&&nbsp;Comunicaciones, Operaciones y Voluntariado. El
+      propósito compartido es lo más sólido; la claridad de objetivos y el encaje cultural con las áreas de soporte,
+      lo que falta destrabar.</p>
+    <div class="chips rev">
+      <span class="chip">13 personas · <b>5 áreas</b></span>
+      <span class="chip">Fundraising <b>7</b> · Soporte <b>6</b></span>
+      <span class="chip">Escala <b>1 a 5</b></span>
+      <span class="chip">Ago 2026</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- KPIs -->
+  <section>
+    <div class="wrap">
+      <div class="kpis">
+        <div class="kpi rev" data-c="verde">
+          <div class="lbl">Evaluación global de la integración</div>
+          <div class="val">4,2<small> / 5</small></div>
+          <div class="pie">85% la puntúa 4 o 5 · nadie por debajo de 3</div>
+        </div>
+        <div class="kpi rev" data-c="verde">
+          <div class="lbl">Alineación de propósito</div>
+          <div class="val">4,8<small> / 5</small></div>
+          <div class="pie">El punto más alto. "Todos vamos al 2030"</div>
+        </div>
+        <div class="kpi rev" data-c="coral">
+          <div class="lbl">Claridad de objetivos de la integración</div>
+          <div class="val">3,6<small> / 5</small></div>
+          <div class="pie">El más bajo. Varios "no sabían" del proceso</div>
+        </div>
+        <div class="kpi rev" data-c="amarillo">
+          <div class="lbl">Encaje de cultura y ritmo</div>
+          <div class="val">4,6 <small>vs</small> 3,2</div>
+          <div class="pie">Fundraising se ve integrado; el soporte, menos</div>
+        </div>
+        <div class="kpi rev" data-c="azul">
+          <div class="lbl">Cuello de botella nº 1</div>
+          <div class="val">3,4<small> / 5</small></div>
+          <div class="pie">Coordinación con Operaciones / países</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. CONTEXTO -->
+  <section>
+    <div class="wrap">
+      <div class="sec-title rev">1 · Resumen de contexto</div>
+      <div class="card prosa rev">
+        <p>El clima general de la integración es <strong>positivo y de aprendizaje</strong>. La evaluación global
+          promedia <strong>4,2 sobre 5</strong> y el 85% del equipo la puntúa en 4 o 5, sin ninguna calificación
+          reprobatoria. Lo que sostiene esa percepción es un activo difícil de construir: la <strong>alineación de
+          propósito</strong> (4,8), transversal a todas las áreas y a los dos "lados" de la mesa —"todos vamos al
+          2030", "que nadie viva en un piso de tierra". Sobre esa base común, el equipo reconoce avances concretos:
+          espacios de comunicación que antes no existían (canales de Slack compartidos, reuniones mensuales), mayor
+          transparencia y control cruzado de presupuestos, y un rol de dirección de Fundraising que funcionó como
+          bisagra para bajar la nueva dinámica al equipo.</p>
+        <p>La tensión no está en el "para qué" sino en el <strong>"cómo"</strong>. Aparece una <strong>asimetría de
+          percepción</strong> que es el hallazgo central: Fundraising se auto-percibe muy integrado (cultura y ritmo
+          4,6), mientras las áreas de soporte lo viven bastante más distante (3,2). Traducido: los equipos de soporte
+          sienten un choque de ritmo y formas —urgencia vs. formalidad, canales informales vs. registro, pedidos con
+          poca anticipación— que Fundraising todavía no dimensiona del todo. A eso se suma que la <strong>claridad de
+          objetivos de la integración es el punto más débil</strong> (3,6): varias personas declararon no haber estado
+          al tanto de que se atravesaba un proceso de adaptación, y persiste una brecha de identidad ("OI tradicional
+          vs. Fundraising") que opera en contra de sentirse un solo equipo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. ANÁLISIS -->
+  <section>
+    <div class="wrap">
+      <div class="sec-title rev">2 · Análisis de resultados</div>
+      <p class="sec-lead rev">Radar de alineación: dónde coinciden y dónde divergen Fundraising y las áreas de soporte
+        sobre las mismas seis preguntas del clima de integración.</p>
+      <div class="grid-2 narrow">
+        <div class="card rev">
+          <h3>Radar de alineación</h3>
+          <p class="hint">Promedio 1–5. Celeste = Fundraising (n=7) · Violeta = Áreas de soporte (n=6).</p>
+          <div class="chart-box"><canvas id="radar" aria-label="Radar de alineación por dimensión"></canvas></div>
+        </div>
+        <div class="card rev">
+          <h3>Insights de las respuestas abiertas</h3>
+          <p class="hint">Síntesis por tema (no se transcriben respuestas individuales).</p>
+          <div class="ins">
+            <div class="ico up">✓</div>
+            <div><h4>El propósito une, y se nota</h4>
+              <p>Lo que "mejor funcionó" converge en lo mismo en todas las áreas: sentido compartido, espacios de
+                comunicación nuevos y transparencia financiera.</p></div>
+          </div>
+          <div class="ins">
+            <div class="ico down">↓</div>
+            <div><h4>Urgencia vs. formalidad</h4>
+              <p>Finanzas pide orden, registro y anticipación; Fundraising opera rápido y por canales informales.
+                "Todo es urgente para ayer" corre las tareas del área administrativa.</p></div>
+          </div>
+          <div class="ins">
+            <div class="ico down">↓</div>
+            <div><h4>Países: la información llega tarde</h4>
+              <p>Quiebres de caja y confirmaciones de Building Trips se conocen con poca anticipación; falta
+                coordinación entre Operaciones de Fundraising y las direcciones de cluster.</p></div>
+          </div>
+          <div class="ins">
+            <div class="ico flag">⚑</div>
+            <div><h4>Marketing: reactivo, no estratégico</h4>
+              <p>Se valora el soporte audiovisual pero se pide un rol dedicado 100% a fundraising digital y a ventas,
+                con métricas de recaudación.</p></div>
+          </div>
+          <div class="ins">
+            <div class="ico flag">⚑</div>
+            <div><h4>"No me enteré del proceso"</h4>
+              <p>Objetivos percibidos como generales y comunicados de forma despareja; la etiqueta "OI tradicional vs.
+                Fundraising" abre una brecha de identidad.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card rev">
+          <h3>Clima de integración · las 6 dimensiones</h3>
+          <p class="hint">Promedio del equipo completo (n=13), escala 1–5.</p>
+          <div id="barras-clima"></div>
+        </div>
+        <div class="card rev">
+          <h3>Cómo evalúa Fundraising el soporte que recibe</h3>
+          <p class="hint">Promedio de quienes recaudan (n=7), por área de soporte.</p>
+          <div id="barras-soporte"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. PROCESOS CRÍTICOS -->
+  <section>
+    <div class="wrap">
+      <div class="sec-title rev">3 · Procesos críticos a mejorar</div>
+      <p class="sec-lead rev">Mapa de calor de cuellos de botella, ordenados por urgencia (rojo = frena hoy la
+        agilidad comercial o el soporte). El número es el promedio 1–5 de la dimensión asociada.</p>
+      <div class="card rev">
+        <div class="heat" id="heat"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ENTREVISTAS -->
+  <section>
+    <div class="wrap">
+      <div class="sec-title rev">4 · Focos para entrevistas a profundidad</div>
+      <p class="sec-lead rev">Temas repetidos, alarmas y contradicciones entre áreas que el dato cuantitativo no
+        alcanza a explicar. Dos preguntas guía para cada conversación 1:1.</p>
+      <div class="entrev">
+        <div class="caja f1 rev">
+          <div class="foco">Foco 1 · Contradicción</div>
+          <h4>La asimetría de percepción cultural</h4>
+          <p class="desc">Fundraising se siente muy integrado (cultura/ritmo 4,6) pero las áreas de soporte lo viven
+            distante (3,2). El propósito está alineado; las formas de trabajar, no.</p>
+          <div class="q">¿Qué situaciones concretas te hacen sentir que trabajan a ritmos o culturas distintas?</div>
+          <div class="q">¿Qué tendría que cambiar para que sientas que son un solo equipo y no dos que colaboran?</div>
+        </div>
+        <div class="caja f2 rev">
+          <div class="foco">Foco 2 · Red flag</div>
+          <h4>Voluntariado siente que no es escuchado</h4>
+          <p class="desc">Es la voz más crítica del relevamiento (opinión toma­da 2, objetivos 2, cultura 2). Señala
+            haber expresado desacuerdos "sin éxito" y pedidos de Fundraising a los países con poca anticipación.</p>
+          <div class="q">¿Podés contarme un caso donde propusiste algo y sentiste que no fue tomado en cuenta?</div>
+          <div class="q">¿Qué pedidos hacia los países o equipos locales generan más fricción operativa, y por qué?</div>
+        </div>
+        <div class="caja f3 rev">
+          <div class="foco">Foco 3 · Cuello de botella</div>
+          <h4>La información con países llega tarde</h4>
+          <p class="desc">Operaciones es el puntaje más bajo (3,4). Quiebres de caja y confirmaciones de Building Trips
+            se conocen a destiempo; se perdieron espacios de coordinación tipo CGO.</p>
+          <div class="q">¿En qué punto del proceso se pierde la información de cashflow o de quiebres de caja?</div>
+          <div class="q">¿Qué haría que la coordinación Fundraising–Operaciones–cluster fluya sin reuniones extra?</div>
+        </div>
+        <div class="caja f4 rev">
+          <div class="foco">Foco 4 · Contradicción</div>
+          <h4>Propósito clarísimo, objetivos difusos</h4>
+          <p class="desc">Alineación de propósito 4,8 pero claridad de objetivos 3,6, con varios "no estaba al tanto
+            del proceso de adaptación". Alto "para qué", bajo "hacia qué metas concretas".</p>
+          <div class="q">¿Qué entendés que se buscaba con la integración y por qué canal te enteraste?</div>
+          <div class="q">¿Qué decisiones sentís que se tomaron sin la mirada de tu área?</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. DECISIONES Y ACCIONABLES -->
+  <section>
+    <div class="wrap">
+      <div class="sec-title rev">5 · Decisiones y accionables</div>
+      <p class="sec-lead rev">Recomendaciones que salen directamente de lo que el equipo pidió. Quick wins destraban en
+        semanas; los de mediano plazo requieren decisión de estructura.</p>
+      <div class="acc">
+        <div class="col quick">
+          <h3><span class="badge">Quick wins</span> Corto plazo · semanas</h3>
+          <ul class="rev">
+            <li><b>Habilitar Brex + política de gastos de representación</b>
+              Fundraisers en terreno hoy pagan de su bolsillo por lo engorroso del reembolso; una política clara
+              desbloquea gestión comercial sin fricción.
+              <div class="areas"><span class="tag">Fundraising</span><span class="tag">Admin & Finanzas</span></div></li>
+            <li><b>Recuperar los espacios periódicos Fundraising ↔ Operaciones</b>
+              Reinstalar la lógica de los CGO para prevenir cuellos de botella con países antes de que escalen.
+              <div class="areas"><span class="tag">Fundraising</span><span class="tag">Operaciones</span></div></li>
+            <li><b>Un solo canal de pedidos a Finanzas (el bot de Slack)</b>
+              Ya existe pero convive con mail y WhatsApp; consolidarlo permite trazabilidad y seguimiento.
+              <div class="areas"><span class="tag">Admin & Finanzas</span><span class="tag">Fundraising</span></div></li>
+            <li><b>Re-comunicar los objetivos de la integración</b>
+              Cerrar el "no me enteré": bajada explícita de qué se busca, con qué metas y cómo participa cada área.
+              <div class="areas"><span class="tag">Dirección</span><span class="tag">Transversal</span></div></li>
+            <li><b>Booklet de confirmación de Building Trips</b>
+              Pedido literal de Operaciones: un instructivo de procesos y precios que hoy se comunican mal.
+              <div class="areas"><span class="tag">Operaciones</span><span class="tag">Fundraising</span></div></li>
+          </ul>
+        </div>
+        <div class="col mid">
+          <h3><span class="badge">Estructura</span> Mediano plazo · trimestre</h3>
+          <ul class="rev">
+            <li><b>Rol de Marketing 100% dedicado a fundraising</b>
+              Con matricialidad a la dirección de Fundraising y métricas de éxito atadas a recaudación, para pasar de
+              soporte reactivo a estrategia de captación digital.
+              <div class="areas"><span class="tag">Marketing & Comms</span><span class="tag">Fundraising</span></div></li>
+            <li><b>Forecast de egresos + presupuesto único de Building Trips</b>
+              Cerrar el circuito financiero que hoy solo cubre ingresos; una herramienta única evita la doble carga
+              (Salesforce + Sheets) y las confusiones en IG.
+              <div class="areas"><span class="tag">Admin & Finanzas</span><span class="tag">Fundraising</span></div></li>
+            <li><b>Redefinir la coordinación Ops de Fundraising ↔ direcciones de cluster</b>
+              Compartir cashflow y planificación con los países para un acompañamiento estratégico, no reactivo.
+              <div class="areas"><span class="tag">Operaciones</span><span class="tag">Fundraising</span></div></li>
+            <li><b>Plan explícito contra la brecha de identidad</b>
+              Dejar de nombrar "OIF / TECHO US / OI tradicional"; lenguaje y rituales de un solo equipo integrado.
+              <div class="areas"><span class="tag">Dirección</span><span class="tag">Transversal</span></div></li>
+            <li><b>Circuito de escucha para Voluntariado y equipos locales</b>
+              Feedback después de construcciones y eventos, y acuerdos de anticipación mínima para pedidos a países.
+              <div class="areas"><span class="tag">Voluntariado & Personas</span><span class="tag">Fundraising</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detalle por área -->
+  <section>
+    <div class="wrap">
+      <div class="sec-title rev">Anexo · Puntajes por área</div>
+      <div class="card rev">
+        <div class="tabla-wrap">
+          <table>
+            <thead><tr>
+              <th>Área</th><th class="n">n</th><th class="n">Eval. global</th><th class="n">Propósito</th>
+              <th class="n">Objetivos</th><th class="n">Cultura/ritmo</th><th class="n">Mi opinión cuenta</th>
+            </tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div class="nota">Las áreas de Marketing, Operaciones y Voluntariado tienen una respuesta cada una: son
+          equipos chicos y la encuesta es anónima, así que el puntaje refleja la voz de esa área sin identificar a
+          la persona. Se leen como señal, no como estadística. El material de texto libre se sintetizó por tema y no
+          se reproduce de forma textual.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <img class="logo" src="https://techo.org/wp-content/uploads/2024/03/Capa_1-1.png" alt="TECHO" />
+    <span class="tagf">Mucho más que un techo.</span>
+    <span class="meta">Uso interno · Evaluación de la integración Fundraising × soporte · corte 25/08/2026 · datos agregados y anonimizados</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+/* ============================================================
+   DATOS — corte manual de la evaluación interna (encuesta Google
+   Forms, respuestas al 25/08/2026, n=13). Puntajes agregados y
+   anonimizados. Se recalculan acá abajo desde los promedios ya
+   computados; el texto libre NO se incluye (se sintetizó por tema).
+   ============================================================ */
+const esc = s => String(s ?? "").replace(/[&<>"']/g,
+  c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+
+const DIMS = ["Comunicación\ndiaria","Mi opinión\ncuenta","Objetivos\nclaros","Cultura y\nritmo común","Alineación de\npropósito","Evaluación\nglobal"];
+const FR   = [4.3, 4.4, 3.4, 4.6, 4.9, 4.0];   // Fundraising n=7
+const SOP  = [4.0, 4.2, 3.8, 3.2, 4.7, 4.3];   // Soporte n=6
+
+// Clima general (n=13)
+const CLIMA = [
+  { l:"Alineación de propósito", v:4.8, c:"v" },
+  { l:"Mi opinión es tomada en cuenta", v:4.3, c:"v" },
+  { l:"Evaluación global del proceso", v:4.2, c:"v" },
+  { l:"Comunicación diaria entre áreas", v:4.2, c:"v" },
+  { l:"Cultura y ritmo compartido", v:3.9, c:"a" },
+  { l:"Objetivos comunicados con claridad", v:3.6, c:"c" },
+];
+
+// Fundraising evalúa el soporte recibido (n=7)
+const SOPORTE = [
+  { l:"Voluntariado · estrategia de vinculación", v:4.6, c:"v" },
+  { l:"Marketing · identidad y mensajes", v:4.7, c:"v" },
+  { l:"Finanzas · presupuestación y flujo de caja", v:4.1, c:"a" },
+  { l:"Finanzas · procesos administrativos", v:4.0, c:"a" },
+  { l:"Marketing · soporte a campañas", v:4.0, c:"a" },
+  { l:"Finanzas · tiempos de respuesta", v:3.9, c:"a" },
+  { l:"Operaciones · comunicación con países", v:3.7, c:"c" },
+  { l:"Operaciones · colaboración y coordinación", v:3.4, c:"c" },
+];
+
+// Cuellos de botella priorizados
+const HEAT = [
+  { rk:1, q:"Coordinación con Operaciones para la gestión de países", sub:"Flujo no consolidado; cluster fuera de conversaciones clave", areas:["Fundraising","Operaciones"], v:3.4 },
+  { rk:2, q:"Encaje de cultura y ritmo con las áreas de soporte", sub:"Urgencia informal vs. registro y anticipación", areas:["Fundraising","Admin & Finanzas","Voluntariado"], v:3.2 },
+  { rk:3, q:"Claridad de objetivos de la integración", sub:'Varios "no estaban al tanto del proceso"; brecha de identidad', areas:["Dirección","Transversal"], v:3.6 },
+  { rk:4, q:"Comunicación de cashflow y Building Trips con países", sub:"Quiebres de caja y confirmaciones a destiempo", areas:["Fundraising","Operaciones"], v:3.7 },
+  { rk:5, q:"Tiempos de respuesta administrativa vs. urgencia comercial", sub:"Sin política de gastos; doble carga de información", areas:["Fundraising","Admin & Finanzas"], v:3.9 },
+  { rk:6, q:"Marketing como soporte estratégico de fundraising", sub:"Reactivo y audiovisual; falta rol dedicado a ventas", areas:["Fundraising","Marketing & Comms"], v:4.0 },
+];
+
+// Puntajes por área (bloque general)
+const AREAS = [
+  { area:"Fundraising", n:7, eval:4.0, prop:4.9, obj:3.4, cult:4.6, op:4.4 },
+  { area:"Admin & Finanzas", n:3, eval:4.7, prop:4.7, obj:4.0, cult:3.3, op:4.7 },
+  { area:"Marketing", n:1, eval:5.0, prop:5.0, obj:5.0, cult:3.0, op:4.0 },
+  { area:"Operaciones", n:1, eval:4.0, prop:5.0, obj:4.0, cult:4.0, op:5.0 },
+  { area:"Voluntariado", n:1, eval:3.0, prop:4.0, obj:2.0, cult:2.0, op:2.0 },
+];
+
+/* ---------- helpers de formato ---------- */
+const dec = n => Number(n).toLocaleString("es-AR",{minimumFractionDigits:1,maximumFractionDigits:1});
+const claseScore = v => v < 3.6 ? "s-bad" : v < 4.2 ? "s-med" : "s-ok";
+const anchoPct = v => Math.round(v/5*100);
+
+/* ---------- barras ---------- */
+function pintarBarras(cont, data){
+  cont.innerHTML = data.map(d => `
+    <div class="barra">
+      <div class="top"><span>${esc(d.l)}</span><b class="num">${dec(d.v)}</b></div>
+      <div class="riel"><div class="fill ${d.c}" data-w="${anchoPct(d.v)}%"></div></div>
+    </div>`).join("");
+  const aplicar = () => cont.querySelectorAll(".fill").forEach(el => el.style.width = el.dataset.w);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) aplicar();
+  else setTimeout(aplicar, 60);
+}
+
+/* ---------- heatmap ---------- */
+function pintarHeat(){
+  document.getElementById("heat").innerHTML = HEAT.map(h => `
+    <div class="fila">
+      <div class="rk">${h.rk}</div>
+      <div>
+        <div class="qtxt">${esc(h.q)}</div>
+        <div class="qsub">${esc(h.sub)}</div>
+        <div style="margin-top:6px">${h.areas.map(a => `<span class="tag">${esc(a)}</span>`).join("")}</div>
+      </div>
+      <div class="score ${claseScore(h.v)}">${dec(h.v)}</div>
+    </div>`).join("");
+}
+
+/* ---------- tabla por área ---------- */
+function pintarTabla(){
+  document.getElementById("tbody").innerHTML = AREAS.map(a => `
+    <tr>
+      <td><b>${esc(a.area)}</b></td>
+      <td class="n">${a.n}</td>
+      <td class="n">${dec(a.eval)}</td>
+      <td class="n">${dec(a.prop)}</td>
+      <td class="n">${dec(a.obj)}</td>
+      <td class="n">${dec(a.cult)}</td>
+      <td class="n">${dec(a.op)}</td>
+    </tr>`).join("");
+}
+
+/* ---------- radar ---------- */
+function pintarRadar(){
+  if (!window.Chart) return;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  new Chart(document.getElementById("radar"), {
+    type:"radar",
+    data:{ labels:DIMS, datasets:[
+      { label:"Fundraising", data:FR, borderColor:"#0092DD", backgroundColor:"rgba(0,146,221,.14)",
+        borderWidth:2, pointBackgroundColor:"#0092DD", pointRadius:3 },
+      { label:"Áreas de soporte", data:SOP, borderColor:"#954B97", backgroundColor:"rgba(149,75,151,.12)",
+        borderWidth:2, pointBackgroundColor:"#954B97", pointRadius:3 },
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      animation: reduce ? false : { duration:700 },
+      plugins:{ legend:{ position:"bottom", labels:{ boxWidth:12, font:{ family:"Montserrat", size:11.5 } } } },
+      scales:{ r:{
+        min:2, max:5, ticks:{ stepSize:1, font:{ family:"Montserrat", size:10 }, backdropColor:"transparent", color:"#9aa1a7" },
+        grid:{ color:"#E2E7EC" }, angleLines:{ color:"#E2E7EC" },
+        pointLabels:{ font:{ family:"Montserrat", size:10.5, weight:"600" }, color:"#2F3235" }
+      }}
+    }
+  });
+}
+
+/* ---------- reveal (default visible, animación opt-in) ---------- */
+function activarReveal(root = document){
+  const revelarTodo = () => root.querySelectorAll(".rev:not(.on)").forEach(el => {
+    el.style.transition = "none"; el.classList.add("on");
+  });
+  if (!("IntersectionObserver" in window) ||
+      !matchMedia("(prefers-reduced-motion: no-preference)").matches ||
+      !window.innerHeight){ revelarTodo(); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ e.target.classList.add("on"); io.unobserve(e.target); }
+  }), { threshold:.08 });
+  root.querySelectorAll(".rev:not(.on)").forEach(el => io.observe(el));
+  setTimeout(() => { if (!root.querySelector(".rev.on")) revelarTodo(); }, 2500);
+}
+
+/* ---------- init ---------- */
+pintarBarras(document.getElementById("barras-clima"), CLIMA);
+pintarBarras(document.getElementById("barras-soporte"), SOPORTE);
+pintarHeat();
+pintarTabla();
+pintarRadar();
+activarReveal();
+</script>
+</body>
+</html>
