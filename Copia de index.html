@@ -1,0 +1,687 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Test: ¿Cuánto te come lo operativo?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --celeste: #0092DD;
+    --celeste-deep: #005CA9;
+    --amarillo: #FDC533;
+    --verde: #2FAC66;
+    --coral: #E94362;
+    --violeta: #954B97;
+
+    --ground: #eef6fc;
+    --surface: #ffffff;
+    --surface-2: #f4f9fd;
+    --ink: #12222e;
+    --ink-soft: #4a6474;
+    --line: #d8e7f2;
+    --line-strong: #bcd6e8;
+    --accent: var(--celeste);
+    --accent-ink: #ffffff;
+    --shadow: 0 18px 44px -20px rgba(0, 92, 169, .45);
+    --shadow-soft: 0 8px 22px -12px rgba(0, 92, 169, .35);
+
+    --font-display: 'Fredoka', system-ui, sans-serif;
+    --font-body: 'Montserrat', system-ui, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0a1620;
+      --surface: #10222f;
+      --surface-2: #16303f;
+      --ink: #eaf4fb;
+      --ink-soft: #93b3c7;
+      --line: #26414f;
+      --line-strong: #34576a;
+      --shadow: 0 20px 48px -20px rgba(0, 0, 0, .7);
+      --shadow-soft: 0 10px 26px -14px rgba(0, 0, 0, .6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0a1620;
+    --surface: #10222f;
+    --surface-2: #16303f;
+    --ink: #eaf4fb;
+    --ink-soft: #93b3c7;
+    --line: #26414f;
+    --line-strong: #34576a;
+    --shadow: 0 20px 48px -20px rgba(0, 0, 0, .7);
+    --shadow-soft: 0 10px 26px -14px rgba(0, 0, 0, .6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(1100px 620px at 82% -8%, rgba(0, 146, 221, .16), transparent 60%),
+      radial-gradient(900px 520px at 10% 108%, rgba(253, 197, 51, .14), transparent 60%),
+      var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 20px 20px 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---- top bar ---- */
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 6px 2px 18px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand svg { height: 26px; width: auto; display: block; }
+  .brand span {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: .82rem;
+    letter-spacing: .04em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .theme-btn {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-soft);
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: grid; place-items: center;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .theme-btn:hover { transform: translateY(-2px); border-color: var(--line-strong); }
+
+  /* ---- card ---- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 26px;
+    box-shadow: var(--shadow);
+    padding: clamp(22px, 4vw, 38px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stage { animation: pop .38s cubic-bezier(.2, .8, .25, 1); }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(14px) scale(.985); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .stage { animation: none; } }
+
+  /* ---- intro ---- */
+  .kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: .74rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--celeste-deep);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    padding: 7px 14px;
+    border-radius: 999px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.9rem, 6vw, 2.7rem);
+    line-height: 1.05;
+    letter-spacing: -.01em;
+    text-wrap: balance;
+    margin: 18px 0 12px;
+  }
+  h1 .hl { color: var(--celeste); }
+  .lead {
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 52ch;
+    margin: 0 0 8px;
+  }
+  .mini-legend {
+    display: grid; gap: 10px;
+    margin: 22px 0 26px;
+  }
+  .lg-row {
+    display: flex; align-items: center; gap: 12px;
+    font-size: .92rem; color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .dot {
+    width: 34px; height: 34px; flex: none;
+    border-radius: 11px;
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700; font-size: .95rem;
+    color: #fff;
+  }
+  .dot.a { background: var(--coral); }
+  .dot.b { background: var(--amarillo); color: #4a3600; }
+  .dot.c { background: var(--verde); }
+  .lg-row strong { color: var(--ink); font-weight: 600; }
+
+  /* ---- buttons ---- */
+  .btn {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    border: none;
+    border-radius: 16px;
+    padding: 15px 26px;
+    cursor: pointer;
+    background: var(--celeste);
+    color: #fff;
+    box-shadow: var(--shadow-soft);
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .btn:hover { transform: translateY(-2px); background: var(--celeste-deep); }
+  .btn:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 3px; }
+  .btn.ghost {
+    background: transparent; color: var(--ink-soft);
+    box-shadow: none; border: 1px solid var(--line);
+    font-size: .95rem; padding: 12px 20px;
+  }
+  .btn.ghost:hover { background: var(--surface-2); color: var(--ink); }
+
+  /* ---- progress ---- */
+  .progress {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px; margin-bottom: 22px;
+  }
+  .bar {
+    flex: 1; height: 9px; border-radius: 999px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .bar > i {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--celeste), var(--verde));
+    border-radius: 999px;
+    transition: width .4s cubic-bezier(.2, .8, .25, 1);
+  }
+  .count {
+    font-family: var(--font-display);
+    font-weight: 600; font-size: .82rem;
+    color: var(--ink-soft);
+    letter-spacing: .04em;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .q-tag {
+    font-family: var(--font-display);
+    font-weight: 600; font-size: .74rem;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--celeste-deep);
+  }
+  .q-text {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.3rem, 4.4vw, 1.7rem);
+    line-height: 1.22;
+    text-wrap: balance;
+    margin: 10px 0 22px;
+  }
+
+  .options { display: grid; gap: 12px; }
+  .opt {
+    display: flex; align-items: flex-start; gap: 14px;
+    text-align: left;
+    width: 100%;
+    background: var(--surface-2);
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    padding: 16px 18px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--ink);
+    transition: transform .12s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
+  }
+  .opt:hover {
+    transform: translateY(-2px);
+    border-color: var(--celeste);
+    box-shadow: var(--shadow-soft);
+  }
+  .opt:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 2px; }
+  .opt.picked { border-color: var(--celeste); background: color-mix(in srgb, var(--celeste) 12%, var(--surface)); }
+  .opt .badge {
+    flex: none;
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700; font-size: .9rem;
+    color: #fff;
+    margin-top: 1px;
+  }
+  .opt[data-k="a"] .badge { background: var(--coral); }
+  .opt[data-k="b"] .badge { background: var(--amarillo); color: #4a3600; }
+  .opt[data-k="c"] .badge { background: var(--verde); }
+
+  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; }
+
+  /* ---- result ---- */
+  .result-head { display: flex; align-items: center; gap: 16px; margin-bottom: 6px; }
+  .emoji-badge {
+    width: 64px; height: 64px; flex: none;
+    border-radius: 20px;
+    display: grid; place-items: center;
+    font-size: 2rem;
+    box-shadow: var(--shadow-soft);
+  }
+  .result h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 5vw, 2.1rem);
+    line-height: 1.08;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .result .prof-tag {
+    font-family: var(--font-display);
+    font-weight: 600; font-size: .78rem;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .score-line {
+    display: flex; align-items: baseline; gap: 8px;
+    margin: 20px 0 8px;
+    font-family: var(--font-display);
+  }
+  .score-line b { font-size: 2.4rem; font-weight: 700; color: var(--celeste); line-height: 1; font-variant-numeric: tabular-nums; }
+  .score-line span { color: var(--ink-soft); font-size: .95rem; }
+  .meter { height: 12px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; }
+  .meter > i { display: block; height: 100%; border-radius: 999px; transition: width .7s cubic-bezier(.2,.8,.25,1); }
+
+  .save-tile {
+    margin: 22px 0;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 20px 22px;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .save-tile .big {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 8vw, 2.9rem);
+    line-height: .95;
+    color: var(--verde);
+    white-space: nowrap;
+  }
+  .save-tile .lbl { font-size: .95rem; line-height: 1.4; color: var(--ink-soft); }
+  .save-tile .lbl strong { color: var(--ink); font-weight: 600; }
+
+  .msg {
+    font-size: 1.03rem; line-height: 1.6; color: var(--ink);
+    border-left: 4px solid var(--amarillo);
+    padding: 4px 0 4px 16px;
+    margin: 4px 0 8px;
+  }
+  .tip {
+    margin-top: 18px;
+    font-size: .92rem; line-height: 1.55; color: var(--ink-soft);
+    background: color-mix(in srgb, var(--celeste) 8%, var(--surface));
+    border: 1px dashed var(--line-strong);
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .tip b { color: var(--celeste-deep); font-family: var(--font-display); }
+
+  footer {
+    text-align: center;
+    padding: 22px 20px 8px;
+    color: var(--ink-soft);
+    font-size: .82rem;
+  }
+  footer .tag { font-family: var(--font-display); font-weight: 600; color: var(--ink); }
+
+  .deco {
+    position: absolute; pointer-events: none;
+    font-size: 0;
+  }
+  .hidden { display: none !important; }
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <svg role="img" aria-label="TECHO" xmlns="http://www.w3.org/2000/svg" width="147" height="35" viewBox="0 0 147 35" fill="none"><g clip-path="url(#clip0_5345_2101)"><path d="M67.2089 34.772C61.3732 34.772 55.9578 31.8674 52.7221 27.0013C49.4066 22.0167 48.9158 15.794 51.3749 9.92773C52.9734 6.11352 56.112 3.02544 59.9834 1.4548C62.364 0.489276 64.7951 -0.00146484 67.2089 -0.00146484C72.7999 -0.00146484 77.9268 2.61183 81.1997 7.05909C81.4138 7.35034 81.3234 7.76395 81.0068 7.94083L75.9465 10.7749C75.5981 10.9704 75.1552 10.9039 74.8905 10.6047C72.9555 8.41694 70.152 7.13755 67.2089 7.13755C63.5995 7.13755 60.3226 8.98083 58.4461 12.0702C56.511 15.2541 56.4605 19.1215 58.3077 22.6817C59.0046 24.0262 60.6178 25.6248 61.981 26.3217C63.682 27.1914 65.4414 27.633 67.2076 27.633C70.1347 27.633 72.9289 26.3629 74.8626 24.1951C75.1273 23.8986 75.5675 23.8334 75.9159 24.0276L80.9802 26.863C81.2968 27.0398 81.3872 27.4548 81.1718 27.746C77.8975 32.172 72.7813 34.7707 67.2076 34.7707L67.2089 34.772Z" fill="#0092DD"></path><path d="M101.841 33.3373V21.2045C101.841 20.8467 101.551 20.5568 101.194 20.5568H91.601C91.2432 20.5568 90.9533 20.8467 90.9533 21.2045V33.3373C90.9533 33.6951 90.6634 33.985 90.3056 33.985H83.9898C83.6321 33.985 83.3422 33.6951 83.3422 33.3373V1.42453C83.3422 1.06678 83.6321 0.776855 83.9898 0.776855H90.3056C90.6634 0.776855 90.9533 1.06678 90.9533 1.42453V13.5574C90.9533 13.9152 91.2432 14.2051 91.601 14.2051H101.194C101.551 14.2051 101.841 13.9152 101.841 13.5574V1.42453C101.841 1.06678 102.131 0.776855 102.489 0.776855H108.805C109.163 0.776855 109.453 1.06678 109.453 1.42453V33.3373C109.453 33.6951 109.163 33.985 108.805 33.985H102.489C102.131 33.985 101.841 33.6951 101.841 33.3373Z" fill="#0092DD"></path><path d="M35.1977 7.25091H49.5728C49.9306 7.25091 50.2205 6.96099 50.2205 6.60324V1.42453C50.2205 1.06678 49.9306 0.776855 49.5728 0.776855H27.7249C27.2913 0.776855 26.9389 1.12928 26.9389 1.56284V33.3466C26.9389 33.7044 27.2288 33.9943 27.5866 33.9943H49.5728C49.9306 33.9943 50.2205 33.7044 50.2205 33.3466V28.1666C50.2205 27.8088 49.9306 27.5189 49.5728 27.5189H35.1977C34.84 27.5189 34.55 27.229 34.55 26.8712V21.2071C34.55 20.8494 34.84 20.5594 35.1977 20.5594H45.2719C45.6296 20.5594 45.9195 20.2695 45.9195 19.9118V14.8567C45.9195 14.499 45.6296 14.2091 45.2719 14.2091H35.1977C34.84 14.2091 34.55 13.9191 34.55 13.5614V7.89593C34.55 7.53818 34.84 7.24825 35.1977 7.24825V7.25091Z" fill="#0092DD"></path><path d="M23.9306 0.776855H0.647672C0.289923 0.776855 0 1.06678 0 1.42453V6.60324C0 6.96099 0.289923 7.25091 0.647672 7.25091H7.8226C8.18035 7.25091 8.47027 7.54084 8.47027 7.89859V33.3466C8.47027 33.7044 8.76019 33.9943 9.11794 33.9943H15.4337C15.7915 33.9943 16.0814 33.7044 16.0814 33.3466V7.89859C16.0814 7.54084 16.3713 7.25091 16.7291 7.25091H23.9319C24.2897 7.25091 24.5796 6.96099 24.5796 6.60324V1.42453C24.5796 1.06678 24.2897 0.776855 23.9319 0.776855H23.9306Z" fill="#0092DD"></path><path d="M117.62 16.2185L117.63 16.2065C117.63 16.2065 117.624 16.2145 117.62 16.2185Z" fill="#69BEAE"></path><path d="M129.213 34.82C138.828 34.82 146.623 27.0253 146.623 17.41C146.623 7.79472 138.828 0 129.213 0C119.597 0 111.803 7.79472 111.803 17.41C111.803 27.0253 119.597 34.82 129.213 34.82Z" fill="#0092DD"></path><path d="M140.949 16.1903L129.702 4.9432C129.432 4.67323 128.994 4.67323 128.724 4.9432L117.477 16.1903C117.068 16.6 117.358 17.2995 117.936 17.2995H121.492C121.926 17.2995 122.278 17.6506 122.278 18.0855V26.0185C122.278 26.3842 122.575 26.6808 122.941 26.6808H135.483C135.849 26.6808 136.145 26.3842 136.145 26.0185V18.0855C136.145 17.6519 136.497 17.2995 136.931 17.2995H140.488C141.066 17.2995 141.356 16.6 140.946 16.1903H140.949Z" fill="white"></path><path d="M122.278 18.0854C122.278 17.6518 121.927 17.2994 121.492 17.2994H117.936C117.746 17.2994 117.589 17.2236 117.476 17.1079L122.28 21.9116V18.0841L122.278 18.0854Z" fill="url(#paint0_linear_5345_2101)"></path><path d="M146.158 21.4012L140.949 16.1919C141.359 16.6015 141.069 17.301 140.49 17.301H136.934C136.501 17.301 136.148 17.6521 136.148 18.087V26.02C136.148 26.3857 135.852 26.6836 135.486 26.6836H122.943C122.761 26.6836 122.595 26.6092 122.475 26.4908L130.738 34.7536C138.296 34.098 144.468 28.616 146.16 21.4039L146.158 21.4012Z" fill="url(#paint1_linear_5345_2101)"></path></g><defs><linearGradient id="paint0_linear_5345_2101" x1="118.513" y1="16.0706" x2="123.317" y2="20.8742" gradientUnits="userSpaceOnUse"><stop offset="0.11" stop-color="#0069B4"></stop><stop offset="0.54" stop-color="#0082CD"></stop><stop offset="0.9" stop-color="#0092DD"></stop></linearGradient><linearGradient id="paint1_linear_5345_2101" x1="129.666" y1="19.2946" x2="141.839" y2="31.4674" gradientUnits="userSpaceOnUse"><stop offset="0.11" stop-color="#0069B4"></stop><stop offset="0.54" stop-color="#0082CD"></stop><stop offset="0.9" stop-color="#0092DD"></stop></linearGradient><clipPath id="clip0_5345_2101"><rect width="146.623" height="34.82" fill="white"></rect></clipPath></defs></svg>
+      <span>Equipo TECHO</span>
+    </div>
+    <button class="theme-btn" id="theme" aria-label="Cambiar tema">◐</button>
+  </div>
+
+  <div class="card">
+    <!-- INTRO -->
+    <section id="intro" class="stage">
+      <span class="kicker">⏱️ Test express · 3 minutos</span>
+      <h1>¿Cuánto te come <span class="hl">lo operativo</span>?</h1>
+      <p class="lead">Un test rápido y sin culpa para descubrir cuánto tiempo se te va en tareas manuales… y cuánto podrías liberar con IA para hacer <strong>más por la misión</strong>. No es un examen ni un reto: es tomar conciencia y reírnos un poco.</p>
+
+      <div class="mini-legend">
+        <div class="lg-row"><span class="dot a">A</span><span>Lo hago <strong>100% a mano</strong>, como siempre.</span></div>
+        <div class="lg-row"><span class="dot b">B</span><span>Uso algún <strong>atajo o plantilla</strong>, pero sin IA.</span></div>
+        <div class="lg-row"><span class="dot c">C</span><span>Le <strong>delego a una IA</strong> (Claude, ChatGPT) como asistente.</span></div>
+      </div>
+
+      <button class="btn" id="start">Empezar el test →</button>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz" class="hidden">
+      <div class="progress">
+        <div class="bar"><i id="bar" style="width:0%"></i></div>
+        <div class="count" id="count">1 / 10</div>
+      </div>
+      <div id="qstage" class="stage">
+        <div class="q-tag" id="qtag">Situación 01</div>
+        <div class="q-text" id="qtext"></div>
+        <div class="options" id="options"></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn ghost" id="back">← Atrás</button>
+        <span class="count" id="hint">Elegí la que más se parezca a vos</span>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="result" class="hidden">
+      <div class="stage">
+        <div class="result-head">
+          <div class="emoji-badge" id="rEmoji"></div>
+          <div class="result">
+            <div class="prof-tag" id="rTag"></div>
+            <h2 id="rTitle"></h2>
+          </div>
+        </div>
+
+        <div class="score-line"><b id="rScore">0</b><span>de 30 puntos</span></div>
+        <div class="meter"><i id="rMeter" style="width:0%"></i></div>
+
+        <div class="save-tile">
+          <div class="big" id="rSave"></div>
+          <div class="lbl" id="rSaveLbl"></div>
+        </div>
+
+        <p class="msg" id="rMsg"></p>
+        <div class="tip" id="rTip"></div>
+
+        <div class="nav-row">
+          <button class="btn ghost" id="restart">↺ Volver a empezar</button>
+          <span class="count">Compartilo con el equipo 💙</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="tag">Automatizar lo operativo = más capacidad humana para la misión.</div>
+  </footer>
+</div>
+
+<script>
+  const QUESTIONS = [
+    {
+      tag: "Los reportes de siempre",
+      text: "Toca armar el reporte semanal del área. ¿Cómo lo encarás?",
+      opts: [
+        { k: "a", t: "Abro un doc en blanco y escribo todo de cero, copiando datos a mano de acá y de allá.", p: 0 },
+        { k: "b", t: "Reuso la plantilla del mes pasado y voy pisando los números nuevos.", p: 1 },
+        { k: "c", t: "Le paso los datos crudos a una IA y le pido que arme el borrador con estructura y resumen.", p: 3 },
+      ],
+    },
+    {
+      tag: "Bandeja al borde del colapso",
+      text: "Abrís el mail y hay 60 sin leer, la mitad urgentes. ¿Cómo lo encarás?",
+      opts: [
+        { k: "a", t: "Los leo uno por uno de arriba a abajo y contesto a mano, rezando por llegar al final del día.", p: 0 },
+        { k: "b", t: "Filtro por remitente o marco los importantes, pero igual respondo todo a pulmón.", p: 1 },
+        { k: "c", t: "Le pido a la IA que me resuma la bandeja, priorice lo urgente y me arme borradores para revisar.", p: 3 },
+      ],
+    },
+    {
+      tag: "Buscar esa info",
+      text: "Necesitás un dato que está enterrado en mails, PDFs y planillas. ¿Qué hacés?",
+      opts: [
+        { k: "a", t: "Abro carpeta por carpeta y scrolleo mails hasta encontrarlo (o rendirme).", p: 0 },
+        { k: "b", t: "Uso Ctrl+F y los buscadores de cada app, saltando de una a otra.", p: 1 },
+        { k: "c", t: "Le pego los documentos a la IA y le pregunto directamente lo que necesito saber.", p: 3 },
+      ],
+    },
+    {
+      tag: "Redactar correos",
+      text: "Hay que responder un mail importante a un aliado. ¿Cuál es tu movida?",
+      opts: [
+        { k: "a", t: "Lo escribo palabra por palabra, lo leo cinco veces y todavía dudo del tono.", p: 0 },
+        { k: "b", t: "Copio un mail parecido que mandé antes y lo edito a mano.", p: 1 },
+        { k: "c", t: "Le doy los puntos clave a la IA y le pido un borrador con el tono justo para ajustar.", p: 3 },
+      ],
+    },
+    {
+      tag: "Reunión de gestión",
+      text: "En 10 minutos tenés que contar tus avances, hitos y pendientes de la semana. ¿Cómo llegás?",
+      opts: [
+        { k: "a", t: "Freno todo e intento reconstruir de memoria qué hice… seguro me olvido la mitad.", p: 0 },
+        { k: "b", t: "Reviso mi agenda y mis chats para rearmar la semana a las apuradas.", p: 1 },
+        { k: "c", t: "Le paso a la IA mis notas y tareas de la semana y le pido un resumen de avances y próximos pasos.", p: 3 },
+      ],
+    },
+    {
+      tag: "Planificar la semana",
+      text: "Tenés que ordenar tareas, prioridades y una reunión de equipo. ¿Cómo lo resolvés?",
+      opts: [
+        { k: "a", t: "Lista en papel o mental, y voy reacomodando todo cada vez que algo cambia.", p: 0 },
+        { k: "b", t: "Uso mi calendario y un tablero, pero armo y reordeno todo a mano.", p: 1 },
+        { k: "c", t: "Le tiro el contexto a la IA y le pido una agenda priorizada y hasta el orden del día.", p: 3 },
+      ],
+    },
+    {
+      tag: "¿Quién tenía que hacer qué?",
+      text: "Hay diez pendientes repartidos en el equipo y no sabés cuáles siguen abiertos. ¿Cómo hacés el seguimiento?",
+      opts: [
+        { k: "a", t: "Pregunto uno por uno por chat y voy anotando en un papel quién va con qué.", p: 0 },
+        { k: "b", t: "Tengo una planilla de pendientes que actualizo a mano cada vez.", p: 1 },
+        { k: "c", t: "Le doy el contexto a la IA y le pido la lista de pendientes con responsables y estados, lista para mandar.", p: 3 },
+      ],
+    },
+    {
+      tag: "Analizar datos",
+      text: "Tenés 50 respuestas de una encuesta que hiciste. ¿Cómo sacás conclusiones?",
+      opts: [
+        { k: "a", t: "Leo respuesta por respuesta y voy anotando patrones en una hoja aparte.", p: 0 },
+        { k: "b", t: "Armo tablas dinámicas y gráficos a mano en la planilla.", p: 1 },
+        { k: "c", t: "Le paso el dataset a la IA y le pido patrones, hallazgos y un resumen accionable.", p: 3 },
+      ],
+    },
+    {
+      tag: "Armar la presentación",
+      text: "Tenés que presentar los avances del proyecto y armar las diapos. ¿Por dónde empezás?",
+      opts: [
+        { k: "a", t: "Abro las slides en blanco y las armo una por una desde cero.", p: 0 },
+        { k: "b", t: "Reciclo una presentación vieja y voy cambiando textos e imágenes a mano.", p: 1 },
+        { k: "c", t: "Le paso el contenido a la IA y le pido estructura, guion y textos de cada diapo para pulir.", p: 3 },
+      ],
+    },
+    {
+      tag: "Minutas y notas",
+      text: "Terminó una reunión de una hora con mil temas. ¿Y ahora la minuta?",
+      opts: [
+        { k: "a", t: "Reescribo mis notas desde cero tratando de acordarme quién dijo qué.", p: 0 },
+        { k: "b", t: "Ordeno un poco lo que anoté y lo mando tal cual, medio crudo.", p: 1 },
+        { k: "c", t: "Le paso la transcripción o mis notas a la IA y le pido minuta + tareas con responsables.", p: 3 },
+      ],
+    },
+  ];
+
+  const PROFILES = [
+    {
+      min: 0, max: 10,
+      tag: "Perfil 1 de 3",
+      title: "100% Operativo/a",
+      emoji: "🧗",
+      bg: "linear-gradient(135deg,#E94362,#954B97)",
+      color: "var(--coral)",
+      save: "≈ 6–8 hs",
+      saveLbl: "por semana es lo que hoy se te va en tareas que la IA podría hacer con vos.",
+      msg: "Sos motor puro: sostenés la operación con las manos. Eso es admirable… y también agotador. La buena noticia es que hay muchísimo margen para liberar tiempo. Cada hora que hoy se va en lo repetitivo es una hora que mañana podés poner donde de verdad importa: las comunidades.",
+      tip: "Empezá por UNA sola tarea esta semana. Elegí la que más te aburre o te consume, y probá pedírsela a Claude o ChatGPT. Un solo cambio ya se nota.",
+    },
+    {
+      min: 11, max: 20,
+      tag: "Perfil 2 de 3",
+      title: "En Transición",
+      emoji: "🚀",
+      bg: "linear-gradient(135deg,#FDC533,#0092DD)",
+      color: "var(--amarillo)",
+      save: "≈ 3–5 hs",
+      saveLbl: "por semana podrías sumar afinando tus atajos y dándole más juego a la IA.",
+      msg: "¡Ya le tomaste la mano a los atajos! Usás plantillas, buscadores y algo de tecnología para no hacer todo a pulmón. El próximo salto es dejar de ser quien ejecuta cada paso y empezar a delegar el proceso completo a una IA. Estás a un empujón de recuperar tardes enteras para lo estratégico.",
+      tip: "Donde hoy usás una plantilla, probá pedirle a la IA que la complete por vos. Pasá de 'copio y edito' a 'delego y reviso'.",
+    },
+    {
+      min: 21, max: 30,
+      tag: "Perfil 3 de 3",
+      title: "Estratega con IA",
+      emoji: "🧠",
+      bg: "linear-gradient(135deg,#2FAC66,#0092DD)",
+      color: "var(--verde)",
+      save: "Ya liberás horas",
+      saveLbl: "y las estás reinvirtiendo donde más suman. Ahora sos quien contagia al equipo.",
+      msg: "Tenés a la IA como aliada: le delegás lo operativo y usás tu cabeza para pensar, decidir y crear. Así se ve trabajar con sentido de urgencia sin quemarse. Tu próximo desafío no es personal, es colectivo: compartir tus trucos para que el equipo entero libere capacidad y multipliquemos el impacto.",
+      tip: "Sos referente sin saberlo. Elegí un flujo que ya automatizaste y enseñáselo a alguien del equipo esta semana. Tu tiempo ahorrado se vuelve tiempo de todos.",
+    },
+  ];
+
+  const el = (id) => document.getElementById(id);
+  let idx = 0;
+  const answers = new Array(QUESTIONS.length).fill(null);
+
+  // theme toggle
+  const root = document.documentElement;
+  el("theme").addEventListener("click", () => {
+    const current = root.getAttribute("data-theme");
+    const isDark = current === "dark" ||
+      (!current && matchMedia("(prefers-color-scheme: dark)").matches);
+    root.setAttribute("data-theme", isDark ? "light" : "dark");
+  });
+
+  el("start").addEventListener("click", () => {
+    el("intro").classList.add("hidden");
+    el("quiz").classList.remove("hidden");
+    render();
+  });
+
+  el("back").addEventListener("click", () => {
+    if (idx > 0) { idx--; render(); }
+    else {
+      el("quiz").classList.add("hidden");
+      el("intro").classList.remove("hidden");
+    }
+  });
+
+  el("restart").addEventListener("click", () => {
+    idx = 0;
+    answers.fill(null);
+    el("result").classList.add("hidden");
+    el("intro").classList.remove("hidden");
+  });
+
+  function render() {
+    const q = QUESTIONS[idx];
+    el("count").textContent = `${idx + 1} / ${QUESTIONS.length}`;
+    el("bar").style.width = `${(idx / QUESTIONS.length) * 100}%`;
+    el("qtag").textContent = "Situación " + String(idx + 1).padStart(2, "0") + " · " + q.tag;
+    el("qtext").textContent = q.text;
+    el("back").textContent = idx === 0 ? "← Volver" : "← Atrás";
+
+    const box = el("options");
+    box.innerHTML = "";
+    q.opts.forEach((o) => {
+      const b = document.createElement("button");
+      b.className = "opt" + (answers[idx] === o.k ? " picked" : "");
+      b.dataset.k = o.k;
+      b.innerHTML = `<span class="badge">${o.k.toUpperCase()}</span><span>${o.t}</span>`;
+      b.addEventListener("click", () => choose(o));
+      box.appendChild(b);
+    });
+
+    // replay entrance animation
+    const st = el("qstage");
+    st.classList.remove("stage"); void st.offsetWidth; st.classList.add("stage");
+  }
+
+  function choose(o) {
+    answers[idx] = o.k;
+    // brief highlight, then advance
+    render();
+    setTimeout(() => {
+      if (idx < QUESTIONS.length - 1) { idx++; render(); }
+      else finish();
+    }, 260);
+  }
+
+  function finish() {
+    const score = QUESTIONS.reduce((s, q, i) => {
+      const pick = q.opts.find((o) => o.k === answers[i]);
+      return s + (pick ? pick.p : 0);
+    }, 0);
+    const max = QUESTIONS.length * 3;
+    const prof = PROFILES.find((p) => score >= p.min && score <= p.max);
+
+    el("bar").style.width = "100%";
+    el("quiz").classList.add("hidden");
+    el("result").classList.remove("hidden");
+
+    el("rEmoji").textContent = prof.emoji;
+    el("rEmoji").style.background = prof.bg;
+    el("rTag").textContent = prof.tag;
+    el("rTitle").textContent = prof.title;
+    el("rMsg").textContent = prof.msg;
+    el("rTip").innerHTML = "<b>Tu próximo paso:</b> " + prof.tip;
+    el("rSave").textContent = prof.save;
+    el("rSave").style.color = prof.color;
+    el("rSaveLbl").innerHTML = prof.saveLbl;
+
+    // animated counters
+    let n = 0;
+    const meter = el("rMeter");
+    meter.style.background = prof.bg;
+    const target = score;
+    const step = () => {
+      n += Math.max(1, Math.round(target / 20));
+      if (n >= target) n = target;
+      el("rScore").textContent = n;
+      if (n < target) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    setTimeout(() => { meter.style.width = `${(score / max) * 100}%`; }, 80);
+  }
+</script>
